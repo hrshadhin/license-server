@@ -6,6 +6,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -23,11 +24,16 @@ func init() {
 	password := os.Getenv("db_pass")
 	dbName := os.Getenv("db_name")
 	dbHost := os.Getenv("db_host")
-
-	dbUri := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
+	dbType := os.Getenv("db_type")
+	dbUri := ""
+	if dbType == "postgres" {
+		dbUri = fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
+	} else {
+		dbUri = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",username, password, dbName)
+	}
 	// fmt.Println(dbUri)
 
-	conn, err := gorm.Open("postgres", dbUri)
+	conn, err := gorm.Open(dbType, dbUri)
 	if err != nil {
 		fmt.Print(err)
 	}
