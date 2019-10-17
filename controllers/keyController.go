@@ -1,11 +1,19 @@
 package controllers
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
+	"github.com/jinzhu/gorm"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/hrshadhin/license-server/models"
 	u "github.com/hrshadhin/license-server/utils"
+	"github.com/gorilla/mux"
+
 )
 
 var CreateKey = func(w http.ResponseWriter, r *http.Request) {
@@ -24,4 +32,47 @@ var CreateKey = func(w http.ResponseWriter, r *http.Request) {
 var KeyList = func(w http.ResponseWriter, r *http.Request) {
 	resp := models.FetchAllKeys()
 	u.Respond(w, resp)
+}
+
+var UpdateKey = func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	resp := u.Message(true, "Key updated!")
+
+	if !strings.Contains(vars["domain"], ".") {
+		resp = u.Message(false, "Invalid domain")
+	}
+
+	key := &models.Key{}
+	found := key.FindByDomain(vars["domain"])
+	if !found {
+		resp = u.Message(false, "Domain not found!")
+	}
+
+	temp := &models.Key{}
+	err := json.NewDecoder(r.Body).Decode(temp)
+	if err != nil {
+		u.Respond(w, u.Message(false, "Invalid request"))
+		return
+	}
+	//just be safe about user will mass
+	temp.Key = key.Key
+	fmt.Println(temp.ExpiredAt)
+	if(temp.UpdateKey){
+		domainWithPad := key.Domain + fmt.Sprintf("%v", time.Now().Unix())
+		hasher := sha1.New()
+		hasher.Write([]byte(domainWithPad))
+		newKey := hex.EncodeToString(hasher.Sum(nil))
+		temp.Key = newKey
+	}
+
+	if(temp.ExpiredAt == nil){
+		temp.ExpiredAt = gorm.ex
+	}
+
+	//update db
+	models.GetDB().Model(&key).Updates(temp)
+
+	u.Respond(w, resp)
+	return
+
 }
