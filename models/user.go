@@ -35,7 +35,7 @@ func (user *User) Validate() (map[string]interface{}, bool) {
 	}
 
 	if len(user.Password) < 6 {
-		return u.Message(false, "Password is required"), false
+		return u.Message(false, "Password is required. Min: 6 characters"), false
 	}
 
 	//Email must be unique

@@ -6,6 +6,8 @@ import (
 
 	u "github.com/hrshadhin/license-server/utils"
 	"github.com/jinzhu/gorm"
+	"crypto/sha1"
+	"encoding/hex"
 )
 
 // a struct to represent key
@@ -16,6 +18,7 @@ type Key struct {
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	ExpiredAt *time.Time `json:"expired_at"`
+	UpdateKey bool 		 `gorm:"-" json:"update_key"`
 }
 
 //Validate incoming user details...
@@ -37,6 +40,7 @@ func (key *Key) Validate() (map[string]interface{}, bool) {
 		return u.Message(false, "Domain already exists!"), false
 	}
 
+
 	return u.Message(false, "Requirement passed"), true
 }
 
@@ -46,8 +50,9 @@ func (key *Key) Create() map[string]interface{} {
 		return resp
 	}
 
-	hashStr := "This is super key"
-	key.Key = hashStr
+	hasher := sha1.New()
+	hasher.Write([]byte(key.Domain))
+	key.Key = hex.EncodeToString(hasher.Sum(nil))
 
 	GetDB().Create(key)
 
@@ -71,4 +76,14 @@ func FetchAllKeys() map[string]interface{} {
 	resp := u.Message(true, "Key List")
 	resp["keys"] = keys
 	return resp
+}
+
+func (key *Key) FindByDomain(domain string) bool {
+
+	err := GetDB().Table("keys").Where("domain = ?", domain).First(key).Error
+	if err != nil {
+		return false
+	}
+
+	return true
 }

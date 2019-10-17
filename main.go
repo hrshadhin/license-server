@@ -21,6 +21,7 @@ func main() {
 	router.HandleFunc("/api/users", controllers.UserList).Methods("GET")
 	router.HandleFunc("/api/keys", controllers.KeyList).Methods("GET")
 	router.HandleFunc("/api/keys", controllers.CreateKey).Methods("POST")
+	router.HandleFunc("/api/keys/{domain}", controllers.UpdateKey).Methods("PATCH")
 	router.NotFoundHandler = http.HandlerFunc(middleware.NotFoundHandler)
 
 	router.Use(middleware.JwtAuthentication) //attach JWT auth middleware
