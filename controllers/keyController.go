@@ -5,15 +5,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"net/http"
 	"strings"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/hrshadhin/license-server/models"
 	u "github.com/hrshadhin/license-server/utils"
-	"github.com/gorilla/mux"
-
 )
 
 var CreateKey = func(w http.ResponseWriter, r *http.Request) {
@@ -65,9 +63,9 @@ var UpdateKey = func(w http.ResponseWriter, r *http.Request) {
 		temp.Key = newKey
 	}
 
-	if(temp.ExpiredAt == nil){
-		temp.ExpiredAt = gorm.ex
-	}
+	//if(temp.ExpiredAt == nil){
+	//	temp.ExpiredAt = gorm.ex
+	//}
 
 	//update db
 	models.GetDB().Model(&key).Updates(temp)

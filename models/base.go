@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -26,12 +27,22 @@ func init() {
 	dbHost := os.Getenv("db_host")
 	dbType := os.Getenv("db_type")
 	dbUri := ""
+
 	if dbType == "postgres" {
 		dbUri = fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
-	} else {
+	} else if dbType == "mysql" {
 		dbUri = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",username, password, dbName)
+	} else if dbType == "sqlite3" {
+		pwd, err := os.Getwd()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		dbUri = pwd+"/license-server.db"
+	} else {
+		fmt.Println("Database type not selected!")
+		os.Exit(1)
 	}
-	// fmt.Println(dbUri)
 
 	conn, err := gorm.Open(dbType, dbUri)
 	if err != nil {
