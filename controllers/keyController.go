@@ -54,23 +54,76 @@ var UpdateKey = func(w http.ResponseWriter, r *http.Request) {
 	}
 	//just be safe about user will mass
 	temp.Key = key.Key
-	fmt.Println(temp.ExpiredAt)
+	//fmt.Println(temp.ExpiredAt)
 	if(temp.UpdateKey){
 		domainWithPad := key.Domain + fmt.Sprintf("%v", time.Now().Unix())
 		hasher := sha1.New()
 		hasher.Write([]byte(domainWithPad))
-		newKey := hex.EncodeToString(hasher.Sum(nil))
-		temp.Key = newKey
+		key.Key = hex.EncodeToString(hasher.Sum(nil))
 	}
 
-	//if(temp.ExpiredAt == nil){
-	//	temp.ExpiredAt = gorm.ex
-	//}
+	if(temp.ExpiredAt != nil){
+		key.ExpiredAt = temp.ExpiredAt
+	}
 
 	//update db
-	models.GetDB().Model(&key).Updates(temp)
+	models.GetDB().Model(&key).Updates(key)
 
 	u.Respond(w, resp)
+	return
+
+}
+
+
+var VerifyKey = func(w http.ResponseWriter, r *http.Request) {
+	status := true
+	message := "Verified"
+
+	type DomainKey struct {
+		Domain    string
+		Key       string
+	}
+	requestBody := &DomainKey{}
+	err := json.NewDecoder(r.Body).Decode(requestBody)
+	if err != nil {
+		status = false
+		message = "Invalid request!"
+	}
+
+	key := &models.Key{}
+	found := key.FindByDomain(requestBody.Domain)
+	if !found {
+		status = false
+		message = "Domain not registered!"
+	}
+
+	if key.Key != requestBody.Key {
+		status = false
+		message = "Invalid key!"
+	}
+
+	if key.ExpiredAt != nil {
+		nowStamp := time.Now()
+		expiredAt := *key.ExpiredAt
+		if nowStamp.After(expiredAt) {
+			status = false
+			message = "License expired!"
+		}
+	}
+
+	// log the event
+	log := &models.KeyAccessLog{}
+	log.Domain = requestBody.Domain
+	log.Key = requestBody.Key
+	log.RequestedAt = time.Now()
+	log.Referrer = u.GetUserIpAddress(r)
+	log.UserAgent = u.GetUserAgent(r)
+	log.Status = status
+	log.Message = message
+
+	log.Create()
+
+	u.Respond(w, u.Message(status, message))
 	return
 
 }

@@ -50,7 +50,7 @@ func init() {
 	}
 
 	db = conn
-	db.Debug().AutoMigrate(&User{}, &Key{})
+	db.Debug().AutoMigrate(&User{}, &Key{}, &KeyAccessLog{})
 	SeedFirstUser()
 }
 

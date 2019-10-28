@@ -22,11 +22,13 @@ func main() {
 	router.HandleFunc("/api/keys", controllers.KeyList).Methods("GET")
 	router.HandleFunc("/api/keys", controllers.CreateKey).Methods("POST")
 	router.HandleFunc("/api/keys/{domain}", controllers.UpdateKey).Methods("PATCH")
+	router.HandleFunc("/api/verify", controllers.VerifyKey).Methods("POST")
+
 	router.NotFoundHandler = http.HandlerFunc(middleware.NotFoundHandler)
 
 	router.Use(middleware.JwtAuthentication) //attach JWT auth middleware
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("app_port")
 	if port == "" {
 		port = "8000" //localhost
 	}

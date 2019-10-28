@@ -15,7 +15,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		notAuth := []string{"/", "/api", "/api/login"} //List of endpoints that doesn't require auth
+		notAuth := []string{"/", "/api", "/api/login", "/api/verify"} //List of endpoints that doesn't require auth
 		requestPath := r.URL.Path                      //current request path
 
 		//check if request does not need authentication, serve the request if it doesn't need it
@@ -33,7 +33,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		if tokenHeader == "" { //Token is missing, returns with error code 403 Unauthorized
 			response = u.Message(false, "Missing auth token")
 			w.WriteHeader(http.StatusForbidden)
-			w.Header().Add("Content-Type", "application/json")
 			u.Respond(w, response)
 			return
 		}
@@ -42,7 +41,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		if len(splitted) != 2 {
 			response = u.Message(false, "Invalid/Malformed auth token")
 			w.WriteHeader(http.StatusForbidden)
-			w.Header().Add("Content-Type", "application/json")
 			u.Respond(w, response)
 			return
 		}
@@ -57,7 +55,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		if err != nil { //Malformed token, returns with http code 403 as usual
 			response = u.Message(false, "Malformed authentication token")
 			w.WriteHeader(http.StatusForbidden)
-			w.Header().Add("Content-Type", "application/json")
 			u.Respond(w, response)
 			return
 		}
@@ -65,7 +62,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		if !token.Valid { //Token is invalid, maybe not signed on this server
 			response = u.Message(false, "Token is not valid.")
 			w.WriteHeader(http.StatusForbidden)
-			w.Header().Add("Content-Type", "application/json")
 			u.Respond(w, response)
 			return
 		}
