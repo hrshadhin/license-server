@@ -16,3 +16,4 @@
 vendor
 .idea
 license-server.db
+bin/.env
