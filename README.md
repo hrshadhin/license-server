@@ -28,3 +28,6 @@ A simple application for license key verification written in Golang.
     cd bin
     ./license-server
     ```
+  
+## API Docs
+[HERE](https://documenter.getpostman.com/view/8901126/SVzz2eF1)
