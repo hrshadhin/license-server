@@ -2,7 +2,9 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -33,4 +35,11 @@ func GetUserIpAddress(r *http.Request) string {
 func GetUserAgent(r *http.Request) string {
 
 	return r.Header.Get("User-Agent")
+}
+
+func MustGetEnv(key string) string {
+	if val := os.Getenv(key); "" != val {
+		return val
+	}
+	panic(fmt.Sprintf("environment variable %s unset", key))
 }
