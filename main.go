@@ -8,15 +8,25 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/hrshadhin/license-server/controllers"
 	"github.com/hrshadhin/license-server/middleware"
+
 	"github.com/getsentry/sentry-go"
+	u "github.com/hrshadhin/license-server/utils"
+	newrelic "github.com/newrelic/go-agent"
+	nrgorilla "github.com/newrelic/go-agent/_integrations/nrgorilla/v1"
 )
 
 func main() {
 
-	sentry_dns := os.Getenv("sentry_dns")
 	sentry.Init(sentry.ClientOptions{
-		Dsn: sentry_dns,
+		Dsn: u.MustGetEnv("sentry_dns"),
 	})
+
+	cfg := newrelic.NewConfig("License Server", u.MustGetEnv("new_relic_license_key"))
+	app, err := newrelic.NewApplication(cfg)
+	if nil != err {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	router := mux.NewRouter()
 
@@ -31,7 +41,6 @@ func main() {
 	router.HandleFunc("/api/verify", controllers.VerifyKey).Methods("POST")
 
 	router.NotFoundHandler = http.HandlerFunc(middleware.NotFoundHandler)
-	//router.Use(middleware.NewrelicApm)
 	router.Use(middleware.JwtAuthentication) //attach JWT auth middleware
 
 	port := os.Getenv("app_port")
@@ -41,7 +50,7 @@ func main() {
 
 	fmt.Println("Listening on http://localhost:" + port)
 
-	err := http.ListenAndServe(":"+port, router)
+	err = http.ListenAndServe(":"+port, nrgorilla.InstrumentRoutes(router, app))
 	if err != nil {
 		fmt.Print(err)
 	}

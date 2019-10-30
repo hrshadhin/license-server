@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"os"
 
+	u "github.com/hrshadhin/license-server/utils"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
@@ -21,24 +22,24 @@ func init() {
 		fmt.Print(e)
 	}
 
-	username := os.Getenv("db_user")
-	password := os.Getenv("db_pass")
-	dbName := os.Getenv("db_name")
-	dbHost := os.Getenv("db_host")
-	dbType := os.Getenv("db_type")
+	username := u.MustGetEnv("db_user")
+	password := u.MustGetEnv("db_pass")
+	dbName := u.MustGetEnv("db_name")
+	dbHost := u.MustGetEnv("db_host")
+	dbType := u.MustGetEnv("db_type")
 	dbUri := ""
 
 	if dbType == "postgres" {
 		dbUri = fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
 	} else if dbType == "mysql" {
-		dbUri = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",username, password, dbName)
+		dbUri = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local", username, password, dbName)
 	} else if dbType == "sqlite3" {
 		pwd, err := os.Getwd()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		dbUri = pwd+"/license-server.db"
+		dbUri = pwd + "/license-server.db"
 	} else {
 		fmt.Println("\nDatabase type not selected!")
 		os.Exit(1)

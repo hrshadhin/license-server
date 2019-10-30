@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"net/http"
-	"os"
 	"strings"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -16,7 +15,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		notAuth := []string{"/", "/api", "/api/login", "/api/verify"} //List of endpoints that doesn't require auth
-		requestPath := r.URL.Path                      //current request path
+		requestPath := r.URL.Path                                     //current request path
 
 		//check if request does not need authentication, serve the request if it doesn't need it
 		for _, value := range notAuth {
@@ -49,7 +48,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		tk := &models.Token{}
 
 		token, err := jwt.ParseWithClaims(tokenPart, tk, func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("token_password")), nil
+			return []byte(u.MustGetEnv("token_password")), nil
 		})
 
 		if err != nil { //Malformed token, returns with http code 403 as usual

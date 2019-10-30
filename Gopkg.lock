@@ -10,6 +10,14 @@
   version = "v3.2.0"
 
 [[projects]]
+  digest = "1:677e79698319e9718eb5fa13d55f0fd125f57b121db489ed8375f2e476cba4f4"
+  name = "github.com/getsentry/sentry-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "6e30a9909361d339adf28d4211947ef408cf7726"
+  version = "v0.3.0"
+
+[[projects]]
   digest = "1:ec6f9bf5e274c833c911923c9193867f3f18788c461f76f05f62bb1510e0ae65"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
@@ -76,6 +84,22 @@
   version = "v1.11.0"
 
 [[projects]]
+  digest = "1:ea6d165b8b6595ba97507901848496c79826eaa55db25a700ea6540504251efd"
+  name = "github.com/newrelic/go-agent"
+  packages = [
+    ".",
+    "internal",
+    "internal/cat",
+    "internal/jsonx",
+    "internal/logger",
+    "internal/sysinfo",
+    "internal/utilization",
+  ]
+  pruneopts = "UT"
+  revision = "71b189101d95daff8af73d3ca0af5f7f5948d917"
+  version = "v2.15.0"
+
+[[projects]]
   branch = "master"
   digest = "1:9d5b5d543996dd584da1db1e0de1926f3e4c3a8dba0fa2f8db70f3ebee2342e0"
   name = "golang.org/x/crypto"
@@ -99,12 +123,14 @@
   analyzer-version = 1
   input-imports = [
     "github.com/dgrijalva/jwt-go",
+    "github.com/getsentry/sentry-go",
     "github.com/gorilla/mux",
     "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/mysql",
     "github.com/jinzhu/gorm/dialects/postgres",
     "github.com/jinzhu/gorm/dialects/sqlite",
     "github.com/joho/godotenv",
+    "github.com/newrelic/go-agent",
     "golang.org/x/crypto/bcrypt",
   ]
   solver-name = "gps-cdcl"
