@@ -40,7 +40,7 @@ func init() {
 		}
 		dbUri = pwd+"/license-server.db"
 	} else {
-		fmt.Println("Database type not selected!")
+		fmt.Println("\nDatabase type not selected!")
 		os.Exit(1)
 	}
 
@@ -50,7 +50,7 @@ func init() {
 	}
 
 	db = conn
-	db.Debug().AutoMigrate(&User{}, &Key{}, &KeyAccessLog{})
+	db.AutoMigrate(&User{}, &Key{}, &KeyAccessLog{})
 	SeedFirstUser()
 }
 
