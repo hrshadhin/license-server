@@ -4,10 +4,10 @@ import (
 	"strings"
 	"time"
 
-	u "github.com/hrshadhin/license-server/utils"
-	"github.com/jinzhu/gorm"
 	"crypto/sha1"
 	"encoding/hex"
+	u "github.com/hrshadhin/license-server/utils"
+	"github.com/jinzhu/gorm"
 )
 
 // a struct to represent key
@@ -55,9 +55,8 @@ func (key *Key) Create() map[string]interface{} {
 	key.Key = hex.EncodeToString(hasher.Sum(nil))
 
 	GetDB().Create(key)
-
 	if key.ID <= 0 {
-		return u.Message(false, "Failed to create key, connection error.")
+		return u.Message(false, "Failed to create key!")
 	}
 
 	response := u.Message(true, "Key has been created")
