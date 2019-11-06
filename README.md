@@ -1,4 +1,4 @@
-# License Server
+# 🔑 :key:License Server🔑 :key:
 A simple application for license key verification written in Golang.
 
 ## Deployment
@@ -26,6 +26,15 @@ A simple application for license key verification written in Golang.
     make 
     ./bin/license-server
     ```
+
+- **:zap:N.B.:zap:**
+   By default server run on `127.0.0.1:8000` you can specify the host and port also.
+   ``` 
+    ./bin/license-server -host=0.0.0.0 -port=8080
+    ./bin/license-server -host=0.0.0.0
+    ./bin/license-server -port=8080
+   ```
+
 ## Cross Platform Build
 - Cross compilation is hard, and docker is help us in that way! Install docker and pull
     docker image `docker pull karalabe/xgo-latest` and install a go package `go get github.com/karalabe/xgo`
@@ -43,3 +52,9 @@ current directory.
     
 ## API Docs
 [HERE](https://documenter.getpostman.com/view/8901126/SVzz2eF1)
+
+# :telescope: Need more help? 
+Send an e-mail to H.R. Shadhin via [dev@hrshadhin.me](mailto:dev@hrshadhin.me)
+
+# License
+[MIT](https://github.com/hrshadhin/license-server/blob/master/LICENSE)
