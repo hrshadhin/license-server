@@ -1,4 +1,4 @@
-# 🔑 :key:License Server🔑 :key:
+# :key:License Server:key:
 A simple application for license key verification written in Golang.
 
 ## Deployment
