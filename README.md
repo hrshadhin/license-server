@@ -21,6 +21,7 @@ A simple application for license key verification written in Golang.
 
 - **Install dependency** `dep ensure`
 - **Run** `go run main.go`
+- **Test** `go test -v`
 - **Build & Run**
     ```
     make 
