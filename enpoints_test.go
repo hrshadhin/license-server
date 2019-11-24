@@ -13,22 +13,19 @@ import (
 
 var token = ""
 
-func FireRequest(req *http.Request, t *testing.T, handle *func) string {
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handle)
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("Wrong status code: got => '%v' want => '%v'", status, http.StatusBadRequest)
-	}
-}
-
 func TestHealthCheck(t *testing.T) {
-	req, err := http.NewRequest("GET", "/", nil)
+
+	req, err := http.NewRequest("GET", "/api", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	response := FireRequest(req, t, controllers.Welcome)
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(controllers.Welcome)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got => '%v' want => '%v'",
+			status, http.StatusBadRequest)
+	}
 
 }
 
