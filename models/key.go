@@ -6,6 +6,7 @@ import (
 
 	"crypto/sha1"
 	"encoding/hex"
+
 	u "github.com/hrshadhin/license-server/utils"
 	"github.com/jinzhu/gorm"
 )
@@ -18,7 +19,7 @@ type Key struct {
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	ExpiredAt *time.Time `json:"expired_at"`
-	UpdateKey bool 		 `gorm:"-" json:"update_key"`
+	UpdateKey bool       `gorm:"-" json:"update_key"`
 }
 
 //Validate incoming user details...
@@ -39,7 +40,6 @@ func (key *Key) Validate() (map[string]interface{}, bool) {
 	if temp.Domain != "" {
 		return u.Message(false, "Domain already exists!"), false
 	}
-
 
 	return u.Message(false, "Requirement passed"), true
 }
@@ -85,4 +85,34 @@ func (key *Key) FindByDomain(domain string) bool {
 	}
 
 	return true
+}
+
+func GetKey(keyId string) map[string]interface{} {
+	key := &Key{}
+	err := GetDB().Table("keys").Where("id = ?", keyId).First(key).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return u.Message(false, "Key not found.")
+		}
+		return u.Message(false, "Connection error. Please retry.")
+	}
+
+	resp := u.Message(true, "Key details.")
+	resp["key"] = key
+	return resp
+}
+
+func DeleteKey(keyId string) map[string]interface{} {
+	key := &Key{}
+	err := GetDB().Table("keys").Where("id = ?", keyId).First(key).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return u.Message(false, "Key not found.")
+		}
+		return u.Message(false, "Connection error. Please retry.")
+	}
+
+	GetDB().Delete(&key)
+
+	return u.Message(true, "Key deleted.")
 }

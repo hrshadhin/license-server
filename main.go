@@ -65,7 +65,6 @@ func main() {
 
 }
 
-
 func shutdownWebserver(server *http.Server, logger *log.Logger, quit <-chan os.Signal, done chan<- bool) {
 	<-quit
 	logger.Println("Server is shutting down...")
@@ -88,9 +87,15 @@ func newWebserver(logger *log.Logger) *http.Server {
 	router.HandleFunc("/api/login", controllers.Authenticate).Methods("POST")
 	router.HandleFunc("/api/users", controllers.CreateUser).Methods("POST")
 	router.HandleFunc("/api/users", controllers.UserList).Methods("GET")
+	router.HandleFunc("/api/users/{userId}", controllers.GetUser).Methods("GET")
+	router.HandleFunc("/api/users/{userId}", controllers.UpdateUser).Methods("PATCH")
+	router.HandleFunc("/api/change-password/{userId}", controllers.ChangePassword).Methods("PATCH")
+	router.HandleFunc("/api/users/{userId}", controllers.DeleteUser).Methods("DELETE")
 	router.HandleFunc("/api/keys", controllers.KeyList).Methods("GET")
 	router.HandleFunc("/api/keys", controllers.CreateKey).Methods("POST")
+	router.HandleFunc("/api/keys/{keyId}", controllers.GetKey).Methods("get")
 	router.HandleFunc("/api/keys/{domain}", controllers.UpdateKey).Methods("PATCH")
+	router.HandleFunc("/api/keys/{keyId}", controllers.DeleteKey).Methods("DELETE")
 	router.HandleFunc("/api/verify", controllers.VerifyKey).Methods("POST")
 	router.NotFoundHandler = http.HandlerFunc(middleware.NotFoundHandler)
 	router.Use(middleware.JwtAuthentication) //attach JWT auth middleware
@@ -104,7 +109,6 @@ func newWebserver(logger *log.Logger) *http.Server {
 	}
 
 	final_router := nrgorilla.InstrumentRoutes(router, app)
-
 
 	//server instance
 	return &http.Server{

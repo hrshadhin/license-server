@@ -55,14 +55,14 @@ var UpdateKey = func(w http.ResponseWriter, r *http.Request) {
 	//just be safe about user will mass
 	temp.Key = key.Key
 	//fmt.Println(temp.ExpiredAt)
-	if(temp.UpdateKey){
+	if temp.UpdateKey {
 		domainWithPad := key.Domain + fmt.Sprintf("%v", time.Now().Unix())
 		hasher := sha1.New()
 		hasher.Write([]byte(domainWithPad))
 		key.Key = hex.EncodeToString(hasher.Sum(nil))
 	}
 
-	if(temp.ExpiredAt != nil){
+	if temp.ExpiredAt != nil {
 		key.ExpiredAt = temp.ExpiredAt
 	}
 
@@ -74,14 +74,13 @@ var UpdateKey = func(w http.ResponseWriter, r *http.Request) {
 
 }
 
-
 var VerifyKey = func(w http.ResponseWriter, r *http.Request) {
 	status := true
 	message := "Verified"
 
 	type DomainKey struct {
-		Domain    string
-		Key       string
+		Domain string
+		Key    string
 	}
 	requestBody := &DomainKey{}
 	err := json.NewDecoder(r.Body).Decode(requestBody)
@@ -125,5 +124,19 @@ var VerifyKey = func(w http.ResponseWriter, r *http.Request) {
 
 	u.Respond(w, u.Message(status, message))
 	return
+
+}
+
+var GetKey = func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	resp := models.GetKey(vars["keyId"])
+	u.Respond(w, resp)
+
+}
+
+var DeleteKey = func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	resp := models.DeleteKey(vars["keyId"])
+	u.Respond(w, resp)
 
 }

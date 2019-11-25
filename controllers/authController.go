@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/hrshadhin/license-server/models"
 	u "github.com/hrshadhin/license-server/utils"
 )
@@ -38,4 +39,49 @@ var UserList = func(w http.ResponseWriter, r *http.Request) {
 
 	resp := models.FetchAllUsers()
 	u.Respond(w, resp)
+}
+
+var GetUser = func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	resp := models.GetUser(vars["userId"])
+	u.Respond(w, resp)
+
+}
+var UpdateUser = func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	userId := vars["userId"]
+
+	user := &models.User{}
+	err := json.NewDecoder(r.Body).Decode(user)
+	if err != nil {
+		u.Respond(w, u.Message(false, "Invalid request"))
+		return
+	}
+
+	resp := models.UpdateUser(userId, user.Name, user.Email)
+	u.Respond(w, resp)
+
+}
+
+var ChangePassword = func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	userId := vars["userId"]
+
+	user := &models.User{}
+	err := json.NewDecoder(r.Body).Decode(user)
+	if err != nil {
+		u.Respond(w, u.Message(false, "Invalid request"))
+		return
+	}
+
+	resp := models.ChangePassword(userId, user.Password)
+	u.Respond(w, resp)
+
+}
+
+var DeleteUser = func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	resp := models.DeleteUser(vars["userId"])
+	u.Respond(w, resp)
+
 }
