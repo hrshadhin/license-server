@@ -8,13 +8,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gorilla/mux"
 	"github.com/hrshadhin/license-server/controllers"
 )
 
 var token = ""
 
 func TestHealthCheck(t *testing.T) {
-
 	req, err := http.NewRequest("GET", "/api", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -88,7 +88,7 @@ func TestUserCreate(t *testing.T) {
 	var response map[string]interface{}
 	json.Unmarshal([]byte(rr.Body.String()), &response)
 
-	expected := `User has been created`
+	expected := `User has been created.`
 	getmessage := response["message"].(string)
 	if getmessage != expected {
 		t.Errorf("User create failed!: got => '%v' want => '%v'", getmessage, expected)
@@ -130,6 +130,7 @@ func TestUserExists(t *testing.T) {
 
 func TestGetUsers(t *testing.T) {
 	req, err := http.NewRequest("GET", "/api/users", nil)
+	req = mux.SetURLVars(req, map[string]string{"userId": "2"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -144,7 +145,7 @@ func TestGetUsers(t *testing.T) {
 	var response map[string]interface{}
 	json.Unmarshal([]byte(rr.Body.String()), &response)
 
-	expected := `User List`
+	expected := `User List.`
 	getmessage := response["message"].(string)
 	if getmessage != expected {
 		t.Errorf("User list: got => '%v' want => '%v'", getmessage, expected)
@@ -153,6 +154,81 @@ func TestGetUsers(t *testing.T) {
 		if len(users) != 2 {
 			t.Errorf("User count not match: got => '%v' want => '%v'", len(users), 2)
 		}
+	}
+
+}
+
+func TestGetUser(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/api/users", nil)
+	req = mux.SetURLVars(req, map[string]string{"userId": "2"})
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(controllers.GetUser)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got => '%v' want => '%v'",
+			status, http.StatusBadRequest)
+	}
+
+	var response map[string]interface{}
+	json.Unmarshal([]byte(rr.Body.String()), &response)
+
+	expected := `User details.`
+	getmessage := response["message"].(string)
+	if getmessage != expected {
+		t.Errorf("User: got => '%v' want => '%v'", getmessage, expected)
+	}
+
+}
+
+func TestUserUpdate(t *testing.T) {
+
+	var jsonStr = []byte(`{
+		"name": "H.R. Shadhin",
+		"email": "hello@hrshadhin.me"
+	}`)
+
+	req, _ := http.NewRequest("PATCH", "/api/users", bytes.NewBuffer(jsonStr))
+	req = mux.SetURLVars(req, map[string]string{"userId": "2"})
+	req.Header.Set("Content-Type", "application/json")
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(controllers.UpdateUser)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got => '%v' want => '%v'",
+			status, http.StatusBadRequest)
+	}
+
+	var response map[string]interface{}
+	json.Unmarshal([]byte(rr.Body.String()), &response)
+
+	expected := `User updated.`
+	getmessage := response["message"].(string)
+	if getmessage != expected {
+		t.Errorf("User update failed!: got => '%v' want => '%v'", getmessage, expected)
+	}
+}
+
+func TestDeleteUser(t *testing.T) {
+	req, _ := http.NewRequest("DELETE", "/api/users", nil)
+	req = mux.SetURLVars(req, map[string]string{"userId": "2"})
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(controllers.DeleteUser)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got => '%v' want => '%v'",
+			status, http.StatusBadRequest)
+	}
+
+	var response map[string]interface{}
+	json.Unmarshal([]byte(rr.Body.String()), &response)
+
+	expected := `User deleted.`
+	getmessage := response["message"].(string)
+	if getmessage != expected {
+		t.Errorf("User: got => '%v' want => '%v'", getmessage, expected)
 	}
 
 }
