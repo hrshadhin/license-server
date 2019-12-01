@@ -4,6 +4,26 @@ A simple application for license key verification written in Golang.
 ## Deployment
 - **Requirement**
     - Mysql / Sqlite3 / PostgreSQL
+- **Deploy**
+    - setup your db,webserver(i.e: nginx)
+    - use repo `etc/license-server.service` file and change your needs
+    - copy `etc/license-server.service` file to `/etc/systemd/system/license-server.service` or your os 
+      systemd service config directory
+    - Now enable service and start
+     ```bash
+        systemctl enable license-server.service
+        systemctl start license-server.service
+        systemctl status license-server.service
+      ```
+    - Stop the server
+        ```bash
+          systemctl stop license-server.service
+        ```
+    - use repo `etc/license-server.conf` file and change your needs
+    - copy `etc/license-server.conf` file to `/etc/nginx/site-available` or your os 
+      web server vhost config directory
+    - now restart webserver ```service nginx restart```
+
 
 ## Development
 
