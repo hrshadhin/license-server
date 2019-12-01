@@ -7,23 +7,21 @@ Type=simple
 User=root
 Group=www-data
 
-ExecStart=/home/user/license-server/bin/license-server-linux-amd64
-ExecReload=/bin/kill -SIGINT $MAINPID
-ExecStop=/bin/kill -SIGINT $MAINPID
-RemainAfterExit=no
+ExecStart=/<path_to_the_binary>
+ExecStop=/bin/kill -TERM $MAINPID
+ExecReload=/bin/kill -TERM $MAINPID
+KillMode=process
 Restart=on-failure
-RestartSec=3s
 
 Environment=db_name=license_server
-Environment=db_user=<REDACTED>
-Environment=db_pass=<REDACTED>
-Environment=db_type=<REDACTED>
-Environment=db_host=<REDACTED>
-Environment=db_port=<REDACTED>
-Environment=token_password=thisIsTheJwtPassword
-Environment=sentry_dns=<REDACTED>
-Environment=new_relic_license_key=<REDACTED>
-
+Environment=db_user=<set_your_value>
+Environment=db_pass=<set_your_value>
+Environment=db_type=<set_your_value>
+Environment=db_host=<set_your_value>
+Environment=db_port=<set_your_value>
+Environment=token_password=<set_your_value>
+Environment=sentry_dns=<set_your_value>
+Environment=new_relic_license_key=<set_your_value>
 
 
 [Install]
