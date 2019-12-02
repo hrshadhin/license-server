@@ -1,0 +1,54 @@
+GET http://ls.hrshadhin.me/api
+
+POST http://ls.hrshadhin.me/api/login
+Content-Type: application/json
+@login.json
+
+GET http://ls.hrshadhin.me/api/users
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+
+POST http://ls.hrshadhin.me/api/users
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+@newuser.json
+
+GET http://ls.hrshadhin.me/api/users/2
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+
+PATCH http://ls.hrshadhin.me/api/users/2
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+@updateuser.json
+
+PATCH http://ls.hrshadhin.me/api/change-password/2
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+@newpass.json
+
+DELETE http://ls.hrshadhin.me/api/users/2
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+
+GET http://ls.hrshadhin.me/api/keys
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+
+POST http://ls.hrshadhin.me/api/keys
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+@newkey.json
+
+GET http://ls.hrshadhin.me/api/keys/1
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+
+PATCH http://ls.hrshadhin.me/api/keys/1
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+@updatekey.json
+
+DELETE http://ls.hrshadhin.me/api/keys/1
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o

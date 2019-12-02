@@ -1,0 +1,4 @@
+POST http://ls.hrshadhin.me/api/verify
+Content-Type: application/json
+Authorization: Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjN9.PQQY7XOXt-qLrUFyY6Fr53IPsAQTOlTcusQQN2hVR_o
+@verify.json
