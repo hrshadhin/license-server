@@ -16,5 +16,5 @@
 vendor
 .idea
 license-server.db
-bin/.env
-bin/license-server
+bin
+.vscode
