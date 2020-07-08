@@ -72,7 +72,7 @@ current directory.
 - More build details find [here](https://github.com/karalabe/xgo)
     
 ## API Docs
-[HERE](https://documenter.getpostman.com/view/8901126/SVzz2eF1)
+[Check docs directory](docs)
 
 # :telescope: Need more help? 
 Send an e-mail to H.R. Shadhin via [dev@hrshadhin.me](mailto:dev@hrshadhin.me)

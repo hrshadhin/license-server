@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "f109b854-fc54-4a10-ae29-01b0122cbfd1",
+		"name": "LS",
+		"description": "a license server for application key & license management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "health check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"dev@hrshadhin.me\",\n\t\"password\": \"dev#321\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Barer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "key list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/keys",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"keys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/users/{{userId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get key",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/keys/{{keyId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"keys",
+						"{{keyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/users/{{userId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete key",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/keys/{{keyId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"keys",
+						"{{keyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"H.R.S\",\n    \"email\": \"hrs@hrshadhin.me\",\n    \"Password\": \"demo123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"H.R. Shadhin\",\n    \"email\": \"hello@hrshadhin.me\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/users/{{userId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change user password",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"password\": \"321\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/change-password/{{userId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"change-password",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "key create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"domain\": \"{{domain}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/keys",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"keys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify key",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"domain\": \"{{domain}}\",\n\t\"key\": \"{{license_key}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/verify",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "key update",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Barer {{access_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"expired_at\": \"2020-10-24T23:59:59+06:00\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/keys/{{domain}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"keys",
+						"{{domain}}"
+					]
+				},
+				"description": "sameple input:\n```json\n{\n\t\"update_key\": true,\n\t\"expired_at\": \"2019-10-24T23:59:59+06:00\"\n}\n```"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
